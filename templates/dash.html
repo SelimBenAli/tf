@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Admin - استبيان رضاء الموظّفين</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/assets_admin/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/assets_admin/css/aos.min.css') }}">
+    <style>
+        .display-flex-answers {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body id="page-top">
+<div id="wrapper">
+    <div class="d-flex flex-column" id="content-wrapper">
+        <div id="content">
+            <div class="container-fluid">
+                <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                    <h3 class="text-dark mb-0">Dashboard</h3>
+                    <button class="btn btn-primary btn-sm d-none d-sm-inline-block"
+                            role="button" onclick="printPage()"><i
+                            class="fas fa-download fa-sm text-white-50"></i>&nbsp;Générer Un Rapport
+                    </button>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card shadow border-left-primary py-2">
+                            <div class="card-body">
+                                <div class="row g-0 align-items-center">
+                                    <div class="col me-2">
+                                        <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>Pourcentage Totale</span>
+                                        </div>
+                                        <div class="text-dark fw-bold h5 mb-0">
+                                            <div class="row g-0 align-items-center">
+                                                <div class="col-auto">
+                                                    <div class="text-dark fw-bold h5 mb-0 me-3">
+                                                        <span>{{ avg_totale }}%</span></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="progress progress-sm">
+                                                        <div class="progress-bar {% if avg_totale < 20 %} bg-danger {% elif avg_totale < 50 %} bg-warning {% elif avg_totale < 80 %} bg-info {% else %} bg-success {% endif %}"
+                                                             aria-valuenow="{{ avg_totale }}"
+                                                             aria-valuemin="0" aria-valuemax="100" style="width: {{ avg_totale }}%;">
+                                                            <span class="visually-hidden">{{ avg_totale }}%</span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card shadow border-left-success py-2">
+                            <div class="card-body">
+                                <div class="row g-0 align-items-center">
+                                    <div class="col me-2">
+                                        <div class="text-uppercase text-success fw-bold text-xs mb-1"><span>Pourcentage mod</span>
+                                        </div>
+                                        <div class="text-dark fw-bold h5 mb-0">
+                                            <div class="row g-0 align-items-center">
+                                                <div class="col-auto">
+                                                    <div class="text-dark fw-bold h5 mb-0 me-3">
+                                                        <span>{{ avg_mod }}%</span></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="progress progress-sm">
+                                                        <div class="progress-bar bg-info" aria-valuenow="{{ avg_mod }}"
+                                                             aria-valuemin="0" aria-valuemax="100" style="width: {{ avg_mod }}%;">
+                                                            <span class="visually-hidden">{{ avg_mod }}%</span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card shadow border-left-info py-2">
+                            <div class="card-body">
+                                <div class="row g-0 align-items-center">
+                                    <div class="col me-2">
+                                        <div class="text-uppercase text-info fw-bold text-xs mb-1">
+                                            <span>Pourcentage MOI</span></div>
+                                        <div class="row g-0 align-items-center">
+                                            <div class="col-auto">
+                                                <div class="text-dark fw-bold h5 mb-0 me-3"><span>{{ avg_moi }}%</span>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="progress progress-sm">
+                                                    <div class="progress-bar bg-info" aria-valuenow="{{ avg_moi }}"
+                                                         aria-valuemin="0" aria-valuemax="100" style="width: {{ avg_moi }}%;"><span
+                                                            class="visually-hidden">{{ avg_moi }}%</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card shadow border-left-warning py-2">
+                            <div class="card-body">
+                                <div class="row g-0 align-items-center">
+                                    <div class="col me-2">
+                                        <div class="text-uppercase text-warning fw-bold text-xs mb-1"><span>Pourcentage mos</span>
+                                        </div>
+                                        <div class="text-dark fw-bold h5 mb-0">
+                                            <div class="row g-0 align-items-center">
+                                                <div class="col-auto">
+                                                    <div class="text-dark fw-bold h5 mb-0 me-3">
+                                                        <span>{{ avg_mos }}%</span></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="progress progress-sm">
+                                                        <div class="progress-bar bg-info" aria-valuenow="{{ avg_mos }}"
+                                                             aria-valuemin="0" aria-valuemax="100" style="width: {{ avg_mos }}%;">
+                                                            <span class="visually-hidden">{{ avg_mos }}%</span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div id="page-1">
+                        <h2>Page 1 - أسئلة حول بيئة العمل</h2>
+
+                        <ul>
+                            <li><h5>1. منذ متى وأنت تعمل في تيسكا؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>أقل من 6 أشهر</p>
+                            <span>{{ reponses['Form1']['Q1']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>من 6 أشهر إلى سنتين</p>
+                            <span>{{ reponses['Form1']['Q1']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>من 2 إلى 5 سنوات</p>
+                            <span>{{ reponses['Form1']['Q1']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>أكثر من 5 سنوات</p>
+                            <span>{{ reponses['Form1']['Q1']['4'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>2. كيف تقيم أجواء العمل داخل فريقك؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>جيد جدًا</p>
+                            <span>{{ reponses['Form1']['Q2']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>جيد</p>
+                            <span>{{ reponses['Form1']['Q2']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>متوسط</p>
+                            <span>{{ reponses['Form1']['Q2']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>3. هل تبدو التفاعلات الاجتماعية داخل الفريق إيجابية بالنسبة لك؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>دائما إيجابية</p>
+                            <span>{{ reponses['Form1']['Q3']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>في كثير من الأحيان إيجابية</p>
+                            <span>{{ reponses['Form1']['Q3']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>سلبية</p>
+                            <span>{{ reponses['Form1']['Q3']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>4. هل تعتقد أن المؤسسة تبذل الجهود اللازمة لتعزيز رفاهية الموظفين؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>دائما</p>
+                            <span>{{ reponses['Form1']['Q4']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>غالباً</p>
+                            <span>{{ reponses['Form1']['Q4']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>نادرًا</p>
+                            <span>{{ reponses['Form1']['Q4']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>5. هل أنت راضي عن وضعك في الشركة؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>نعم</p>
+                            <span>{{ reponses['Form1']['Q5']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>لا</p>
+                            <span>{{ reponses['Form1']['Q5']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>نادرًا</p>
+                            <span>{{ reponses['Form1']['Q5']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+
+                        <ul>
+                            <li><h5>6. ما هي الأسباب الرئيسية لغيابك ؟ *</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>المرض</p>
+                            <span>{{ reponses['Form1']['Q6']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>سبب عائلي</p>
+                            <span>{{ reponses['Form1']['Q6']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>مشكلة مع الرئيس المباشر</p>
+                            <span>{{ reponses['Form1']['Q6']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                    </div>
+
+
+                    <div id="page-2">
+                        <h2>Page 2 - أسئلة حول الصحة والسلامة والبيئة</h2>
+
+                        <ul>
+                            <li><h5>1. هل تشعر بالأمان في مكان عملك؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>نعم</p>
+                            <span>{{ reponses['Form2']['Q1']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>لا</p>
+                            <span>{{ reponses['Form2']['Q1']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>نادرًا</p>
+                            <span>{{ reponses['Form2']['Q1']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>2. هل تلقيت التدريب الكافي على إجراءات السلامة؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>نعم</p>
+                            <span>{{ reponses['Form2']['Q2']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>لا</p>
+                            <span>{{ reponses['Form2']['Q2']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>3. هل تعتقد أن معدات الحماية كافية لضمان سلامتك؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>نعم</p>
+                            <span>{{ reponses['Form2']['Q3']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>لا</p>
+                            <span>{{ reponses['Form2']['Q3']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>4. هل أنت راض عن ظروف النظافة في بيئة عملك؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>راض</p>
+                            <span>{{ reponses['Form2']['Q4']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>متوسط</p>
+                            <span>{{ reponses['Form2']['Q4']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>غير راض</p>
+                            <span>{{ reponses['Form2']['Q4']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>5. هل وجدت مرافق صرف صحي نظيفة وجيدة الصيانة؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>راض</p>
+                            <span>{{ reponses['Form2']['Q5']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>متوسط</p>
+                            <span>{{ reponses['Form2']['Q5']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>غير راض</p>
+                            <span>{{ reponses['Form2']['Q5']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>6. هل تعرف معيار التصرف في تصنيف النفايات؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>نعم</p>
+                            <span>{{ reponses['Form2']['Q6']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>لا</p>
+                            <span>{{ reponses['Form2']['Q6']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>7. هل هناك مبادرات للشركة للتقليل من الأثر البيئي؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>دائماً</p>
+                            <span>{{ reponses['Form2']['Q7']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>نادرًا</p>
+                            <span>{{ reponses['Form2']['Q7']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>أبداً</p>
+                            <span>{{ reponses['Form2']['Q7']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>8. هل تعتقد أن الشركة تلبي توقعاتك فيما يتعلق بالصحة والسلامة والبيئة؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>راض</p>
+                            <span>{{ reponses['Form2']['Q8']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>متوسط</p>
+                            <span>{{ reponses['Form2']['Q8']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>غير راض</p>
+                            <span>{{ reponses['Form2']['Q8']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+
+                    </div>
+
+
+                    <div id="page-3">
+                        <h2>Page 3 - أسئلة حول الرضا عن الرئيس المباشر</h2>
+
+                        <ul>
+                            <li><h5>1. كيف تقيم مدى استعداد مديرك للإجابة على أسئلتك؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>متاح جدا</p>
+                            <span>{{ reponses['Form3']['Q1']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>متاح</p>
+                            <span>{{ reponses['Form3']['Q1']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>متاح قليلا</p>
+                            <span>{{ reponses['Form3']['Q1']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>2. هل تشعر أن مديرك يقدر مساهماتك و يثمنها؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>نعم</p>
+                            <span>{{ reponses['Form3']['Q2']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>لا</p>
+                            <span>{{ reponses['Form3']['Q2']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>نادرًا</p>
+                            <span>{{ reponses['Form3']['Q2']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>3. هل يقوم مديرك بتعزيز بيئة عمل إيجابية ومحترمة؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>دائماً</p>
+                            <span>{{ reponses['Form3']['Q3']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>غالباً</p>
+                            <span>{{ reponses['Form3']['Q3']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>أبداً</p>
+                            <span>{{ reponses['Form3']['Q3']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>4. كيف تقيم قدرة مديرك على حل النزاعات داخل الفريق وتلبية احتياجاتهم؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>فعالة</p>
+                            <span>{{ reponses['Form3']['Q4']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>فعالة إلى حد ما</p>
+                            <span>{{ reponses['Form3']['Q4']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>ليست فعالة</p>
+                            <span>{{ reponses['Form3']['Q4']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>5. هل يشجعك مديرك على تطوير مهاراتك والتقدم في حياتك المهنية؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>نعم</p>
+                            <span>{{ reponses['Form3']['Q5']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>لا</p>
+                            <span>{{ reponses['Form3']['Q5']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>نادرًا</p>
+                            <span>{{ reponses['Form3']['Q5']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>6. هل أنت راضٍ عن التواصل بينك وبين رئيسك المباشر؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>راض</p>
+                            <span>{{ reponses['Form3']['Q6']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>متوسط</p>
+                            <span>{{ reponses['Form3']['Q6']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>غير راض</p>
+                            <span>{{ reponses['Form3']['Q6']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+                    </div>
+
+
+                    <div id="page-4">
+                        <h2>Page 4 - أسئلة حول الرضا عن الراتب</h2>
+
+                        <ul>
+                            <li><h5>1. هل تعتقد أن راتبك ينافس السوق؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>نعم</p>
+                            <span>{{ reponses['Form4']['Q1']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>لا</p>
+                            <span>{{ reponses['Form4']['Q1']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>2. هل يتناسب راتبك مع مهاراتك وخبراتك؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>نعم</p>
+                            <span>{{ reponses['Form4']['Q2']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>لا</p>
+                            <span>{{ reponses['Form4']['Q2']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>نادرًا</p>
+                            <span>{{ reponses['Form4']['Q2']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>3. هل أنت راض عن الزيادات في الرواتب التي حصلت عليها؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>راض</p>
+                            <span>{{ reponses['Form4']['Q3']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>متوسط</p>
+                            <span>{{ reponses['Form4']['Q3']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>غير راض</p>
+                            <span>{{ reponses['Form4']['Q3']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>4. هل تعتقد أن معايير تقييم زيادات أصحاب العمل واضحة وعادلة؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>نعم</p>
+                            <span>{{ reponses['Form4']['Q4']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>لا</p>
+                            <span>{{ reponses['Form4']['Q4']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>5. هل أنت راض عن المكافآت والمزايا الاجتماعية التي تقدمها الشركة؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>راض</p>
+                            <span>{{ reponses['Form4']['Q5']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>متوسط</p>
+                            <span>{{ reponses['Form4']['Q5']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>غير راض</p>
+                            <span>{{ reponses['Form4']['Q5']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>6. هل أنت راض عن راتبك الحالي؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>راض</p>
+                            <span>{{ reponses['Form4']['Q6']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>متوسط</p>
+                            <span>{{ reponses['Form4']['Q6']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>غير راض</p>
+                            <span>{{ reponses['Form4']['Q6']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+                    </div>
+
+
+                    <div id="page-5">
+                        <h2>Page 5 - أسئلة حول إلتزامات الشركة</h2>
+
+                        <ul>
+                            <li><h5>1. هل تعتقد أن الشركة تقدر مساهماتك وعملك؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>نعم</p>
+                            <span>{{ reponses['Form5']['Q1']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>لا</p>
+                            <span>{{ reponses['Form5']['Q1']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>نادرًا</p>
+                            <span>{{ reponses['Form5']['Q1']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>2. هل تعتقد أن الشركة تمنح موظفيها الفرصة لتحسين مهاراتهم وحياتهم المهنية؟*</h5>
+                            </li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>نعم</p>
+                            <span>{{ reponses['Form5']['Q2']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>لا</p>
+                            <span>{{ reponses['Form5']['Q2']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>نادرًا</p>
+                            <span>{{ reponses['Form5']['Q2']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>3. هل أنت راضٍ عن استجابة قسم الموارد البشرية لمطالبك؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>نعم</p>
+                            <span>{{ reponses['Form5']['Q3']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>لا</p>
+                            <span>{{ reponses['Form5']['Q3']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>نادرًا</p>
+                            <span>{{ reponses['Form5']['Q3']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>4. هل أنت راض عن الموارد والأدوات المتوفرة لتنفيذ عملك بفعالية؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>راض</p>
+                            <span>{{ reponses['Form5']['Q4']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>متوسط</p>
+                            <span>{{ reponses['Form5']['Q4']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>غير راض</p>
+                            <span>{{ reponses['Form5']['Q4']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>5. هل تعتقد أن الشركة تتواصل بشفافية بشأن القرارات التي تؤثر عليك؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>أتفق تماما</p>
+                            <span>{{ reponses['Form5']['Q5']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>أوافق</p>
+                            <span>{{ reponses['Form5']['Q5']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>لا أوافق</p>
+                            <span>{{ reponses['Form5']['Q5']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+
+                        <ul>
+                            <li><h5>6. هل أنت راض عن فرص التدريب والتطوير التي تقدمها الشركة؟*</h5></li>
+                        </ul>
+                        <div class="display-flex-answers">
+                            <p>راض</p>
+                            <span>{{ reponses['Form5']['Q6']['1'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>متوسط</p>
+                            <span>{{ reponses['Form5']['Q6']['2'] }} / {{ totale_reponses }}</span>
+                        </div>
+                        <div class="display-flex-answers">
+                            <p>غير راض</p>
+                            <span>{{ reponses['Form5']['Q6']['3'] }} / {{ totale_reponses }}</span>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <footer class="bg-white sticky-footer">
+            <div class="container my-auto">
+                <div class="text-center my-auto copyright"><span>Copyright © Tesca 2024</span></div>
+            </div>
+        </footer>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='assets_admin/js/theme.js') }}"></script>
+<script src="{{ url_for('static', filename='assets_admin/bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/Admin.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/Styles.css') }}">
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          background-color: #f2f2f2;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+        }
+        .confirmation-box {
+          background-color: #ffffff;
+          border-radius: 20px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          padding: 30px;
+          text-align: center;
+        }
+        .confirmation-icon {
+          font-size: 6vh;
+          color: #27ae60;
+          margin-bottom: 20px;
+        }
+        .confirmation-text {
+          font-size: 4vh;
+          color: #333333;
+          margin-bottom: 20px;
+        }
+        .order-number {
+          font-size: 2vh;
+          color: #777777;
+        }
+        .back-button {
+          background-color: #3498db;
+          color: #ffffff;
+          border: none;
+          border-radius: 5px;
+          padding: 10px 20px;
+          font-size: 2vh;
+          cursor: pointer;
+          margin-top: 2vh;
+        }
+    </style>
+  <script>
+    function redirectToAnotherPage() {
+      window.location.replace('/forms');
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+      setTimeout(redirectToAnotherPage, 4000);
+    });
+  </script>
+</head>
+<body>
+
+<div class="confirmation-box">
+  <div class="confirmation-icon">&#10004;</div>
+  <div class="confirmation-text">Réponse Envoyée !</div>
+  <div class="order-number"> Powered By <a>TESCA</a> </div>
+  <button class="back-button" onclick="redirectToAnotherPage()"> Retour </button>
+</div>
+
+</body>
+</html>

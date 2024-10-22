@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>استبيان رضاء الموظّفين</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/assets/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/assets/css/aos.min.css') }}">
+</head>
+
+<body onload="printer()">
+<nav class="navbar navbar-expand-md fixed-top navbar-shrink py-3" id="mainNav">
+    <div class="container"><a class="navbar-brand d-flex align-items-center" href="/"><span>
+            <img src="{{ url_for('static', filename='images/logo-tesca.png') }}" style="width: 20%;height: 100%">
+        </span></a>
+        <div class="collapse navbar-collapse" id="navcol-1">
+            <ul class="navbar-nav mx-auto"></ul>
+        </div>
+    </div>
+</nav>
+<section class="py-4 py-md-5 my-5">
+    <div class="container py-md-5" style="display: flex;justify-content: flex-end;">
+        <div class="col-md-5 col-lg-10 col-xl-4 offset-lg-1 text-center text-md-start"
+             style="width: 90%;margin-right: 4%" data-aos="fade-up"
+             data-aos-once="true">
+            <h2 class="display-6 fw-bold mb-5"><span
+                    class="underline pb-1"><strong> استبيان رضاء الموظّفين</strong></span></h2>
+            <p>
+                في إطار خلق بيئة عمل مريحة و متساوية للجميع، ندعوكم للمشاركة في اعطاء أرائكم بكل حرية.
+                ملاحظاتك ضرورية لمساعدتنا في تحديد المجالات التي نتفوق فيها والمجالات التي تحتاج إلى تحسين.
+                يستغرق الاستطلاع حوالي 10 دقائق لإكماله وستكون إجاباتك مجهولة لنا بشكل كامل .
+                سيتم استخدام نتائج هذا الاستطلاع فقط لتلبية احتياجاتك و لتحسين بيئة عملنا.
+                شكرًا لك على قضاء الوقت في الإجابة بصدق وشفافية.
+                آرائك مهمة حقًا وستساعدنا في خلق بيئة عمل مريحة و متساوية للجميع.
+
+            </p>
+            <form method="post" data-bs-theme="light">
+                <div class="mb-3"><input class="shadow-sm form-control" type="email" name="email" placeholder="Email"
+                                         id="email"></div>
+                <div class="mb-3"><input class="shadow-sm form-control" type="text" name="mat" placeholder="Matricule"
+                                         id="mat"></div>
+                <div>
+                    <p><br><span style="color: rgb(32, 33, 36);">الصنف : </span><span
+                            style="color: rgb(217, 48, 37);">*</span><br><br></p>
+
+                    <div class="mb-3">
+                        <div class="form-check"><input class="form-check-input" name="type" type="radio" id="moi"><label
+                                class="form-check-label"><span
+                                style="color: rgb(32, 33, 36);">يد عاملة غير مباشرة (MOI)
+</span></label></div>
+                        <div class="form-check"><input class="form-check-input" name="type" type="radio" id="mod"><label
+                                class="form-check-label"><span
+                                style="color: rgb(32, 33, 36);"> يد عاملة مباشرة (MOD)</span></label>
+                        </div>
+                        <div class="form-check"><input class="form-check-input" name="type" type="radio" id="mos"><label
+                                class="form-check-label"><span
+                                style="color: rgb(32, 33, 36);">إطار (MOS)</span></label>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="mb-5">
+                    <button class="btn btn-primary shadow" type="button" onclick="check_mat_validation()">Suivant
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<footer></footer>
+<script src="{{ url_for('static', filename='css/assets/bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='css/assets/js/aos.min.js') }}"></script>
+<script src="{{ url_for('static', filename='css/assets/js/bs-init.js') }}"></script>
+<script src="{{ url_for('static', filename='css/assets/js/startup-modern.js') }}"></script>
+<script src="{{ url_for('static', filename='js/Scripts.js') }}"></script>
+
+</body>
+
+</html>
